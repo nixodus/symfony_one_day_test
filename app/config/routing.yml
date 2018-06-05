@@ -1,0 +1,4 @@
+githubstats:
+    resource: "@GithubstatsBundle/Resources/config/routing.yml"
+    prefix:   /
+

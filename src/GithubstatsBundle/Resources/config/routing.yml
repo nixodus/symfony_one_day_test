@@ -1,0 +1,3 @@
+githubstats_homepage:
+    path:     /
+    defaults: { _controller: GithubstatsBundle:Githubstats:index }

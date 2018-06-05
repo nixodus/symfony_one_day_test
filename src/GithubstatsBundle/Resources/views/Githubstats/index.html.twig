@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div style="background-color: #0000F0; text-align: center; padding-top: 30px; padding-bottom: 30px;">
+                <div>
+                <form method="POST" class="main-form-search" action="{{ path('githubstats_homepage', []) }}" name="github_form">
+                    <div>
+                        {{ form_errors(form) }}
+                        {{ form_widget(form._token) }}
+                    </div>
+
+                    {{ form_errors(form.user_name) }}
+                    {{ form_widget(form.user_name, { 'attr': {
+                        'placeholder': 'Github user name',
+                    } }) }}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Get Github stats</button>
+                    </span>
+                </form>
+                </div>
+
+
+
+
+                <div style="background-color: #CCCCCC; width: 60%; margin: 50px auto; display: block; padding: 30px;">
+                    {% if error  is not null %}
+                    <div style="color: red;">
+                        <h1>Error: {{ error.code }} - {{ error.message }}</h1>
+                    </div>
+                    {% endif %}
+
+                    {% if userData  is not null %}
+                    <div style="text-align: center; ">
+                        <h1> {{ userData.name }}</h1>
+                    </div>
+                    <hr>
+                    <div style="text-align: left; width: 20%; float: left; font-size: large;">
+                        GitHub Profile
+                    </div>
+                    <div style=" text-align: left;">
+                        On GitHub since {{ userData.created_at }},  {{ userData.name }} is a developer based in  {{ userData.location }} with {{ userData.public_repos }} public repositories and {{ userData.followers }}  followers.
+                    </div>
+                    {% if userData.website  != '' %}
+                    <hr>
+                    <div style="text-align: left; width: 20%; float: left; font-size: large;">
+                        Website
+                    </div>
+                    <div style=" text-align: left;">
+                        <a target="_blank" href="{{ userData.website }}">{{ userData.website }}</a>
+                    </div>
+                    <hr>
+                    <div style="text-align: left; width: 20%; float: left; font-size: large;">
+                        Amount Repositories
+                    </div>
+                    <div style=" text-align: left;">
+                        {{ userData.public_repos }}
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if repositoryData  is not null %}
+                        <hr>
+                        <div style="text-align: left; width: 20%; float: left; font-size: large;">
+                            Languages
+                        </div>
+                        <div style=" text-align: left;">
+                            <table width="79%">
+                                <tr>
+                            {% for key, value in repositoryData.languages %}
+                                <td width="49%">
+                                    {{  value.language }} ({{ value.percent }} %)
+                                </td>
+                                    {% if loop.index is divisible by(2) %}
+                                </tr> <tr>
+                                    {% endif %}
+                            {% endfor %}
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <hr>
+                        <div style="text-align: left; width: 20%; float: left; font-size: large;">
+                            Popular Repositories
+                        </div>
+                        <div style=" text-align: left;">
+                            <table  width="79%">
+
+                                    {% for key, value in repositoryData.most_popular_repos %}
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href=" {{  value.html_url }}">{{  value.name }}</a>
+                                    </td>
+
+
+                                    <td>
+                                        {{  value.language }}
+                                    </td>
+
+                                        <td>
+                                        {{  value.description }}
+                                        </td>
+                                </tr>
+                                    {% endfor %}
+
+                            </table>
+                        </div>
+
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+
